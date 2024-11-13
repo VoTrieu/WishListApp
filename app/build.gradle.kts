@@ -1,7 +1,10 @@
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.kapt)
+//    id("org.jetbrains.kotlin.kapt") version "1.9.0"
+
 }
 
 android {
@@ -41,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
     packaging {
         resources {
@@ -49,6 +52,13 @@ android {
         }
     }
 }
+//
+//kapt {
+//    javacOptions {
+//        // Add compiler options here, e.g.,
+//        option("-XaddExports:jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED")
+//    }
+//}
 
 dependencies {
 
@@ -59,11 +69,18 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material)
     implementation(libs.androidx.material3)
 
-    implementation(libs.room.runtime)
-    implementation(libs.room.ktx)
-    kapt(libs.room.compiler)
+    implementation(libs.room.runtime){
+        exclude(group = "com.intellij", module = "annotations")
+    }
+    implementation(libs.room.ktx){
+        exclude(group = "com.intellij", module = "annotations")
+    }
+    kapt(libs.room.compiler){
+        exclude(group = "com.intellij", module = "annotations")
+    }
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.androidx.navigation.compose)
 
